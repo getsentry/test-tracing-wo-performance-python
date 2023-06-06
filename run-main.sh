@@ -3,4 +3,5 @@ set -euo pipefail
 
 source .venv/bin/activate
 
-python main.py
+python main.py "$@"
+
