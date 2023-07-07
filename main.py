@@ -1,17 +1,10 @@
 import requests
 import sys
-import time
 
 import sentry_sdk
 
 
 SERVER_URL = "http://localhost:5000"
-#SERVER_URL = "https://c9ecfbd01917.ngrok.app"
-
-
-@sentry_sdk.monitor(monitor_slug='twp-cron-job') 
-def some_cron_job():
-    time.sleep(1)
 
 
 def main(value):
@@ -23,9 +16,11 @@ def main(value):
 
     sentry_sdk.capture_message("main.py started")
 
-    some_cron_job()
+    headers = {
+        "baggage": "other-vendor-value-1=foo;bar;baz,other-vendor-value-2=foo;bar;",
+    }
 
-    r = requests.get('%s/%s' % (SERVER_URL, value))
+    r = requests.get("%s/%s" % (SERVER_URL, value), headers=headers)
 
     print()
     print("OUTPUT of main.py:")
